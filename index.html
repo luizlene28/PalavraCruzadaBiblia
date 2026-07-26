@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palavras Cruzadas Bíblicas - Edição Sagrada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 420px;
+            background: #f5f0e8;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 95vh;
+        }
+
+        /* ===== TELA MENU ===== */
+        .screen-menu {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 95vh;
+        }
+
+        .header-menu {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header-menu h1 {
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-menu .coins {
+            background: #f1c40f;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .stats-bar {
+            background: #2c3e50;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            color: #ecf0f1;
+            font-size: 0.85em;
+        }
+
+        .levels-grid {
+            flex: 1;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        .level-btn {
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #e0e0e0;
+            position: relative;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .level-btn.completed {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .level-btn.current {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+            animation: pulse 2s infinite;
+        }
+
+        .level-btn.locked {
+            background: #bdc3c7;
+            color: #7f8c8d;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .level-btn .star {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7em;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ===== TELA JOGO ===== */
+        .screen-game {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 95vh;
+        }
+
+        .game-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .game-header button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .game-header button:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .board-container {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .crossword-board {
+            display: grid;
+            gap: 1px;
+            background: #333;
+            border: 2px solid #333;
+            border-radius: 4px;
+            width: 100%;
+            aspect-ratio: 1;
+            max-height: 350px;
+        }
+
+        .cell {
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1em;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            aspect-ratio: 1;
+        }
+
+        .cell.black {
+            background: #2c3e50;
+            cursor: default;
+            font-size: 0.55em;
+            color: #ecf0f1;
+            font-weight: normal;
+            text-align: center;
+            line-height: 1.1;
+            padding: 2px;
+            word-break: break-word;
+            overflow: hidden;
+        }
+
+        .cell.selected {
+            background: #3498db !important;
+            color: white !important;
+            transform: scale(1.05);
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(52,152,219,0.6);
+        }
+
+        .cell.word-highlight {
+            background: #e8f4fd;
+        }
+
+        .cell.correct {
+            background: #27ae60 !important;
+            color: white !important;
+            animation: correctPop 0.5s;
+        }
+
+        .cell.wrong {
+            background: #e74c3c !important;
+            color: white !important;
+            animation: shake 0.5s;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            font-size: 0.45em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .cell-arrow {
+            position: absolute;
+            bottom: 1px;
+            right: 2px;
+            font-size: 0.45em;
+            color: #666;
+        }
+
+        @keyframes correctPop {
+            0% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .clue-panel {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border-radius: 12px;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .clue-text {
+            font-size: 1em;
+            margin: 5px 0;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clue-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .clue-nav button {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .slots-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+
+        .slot {
+            width: 32px;
+            height: 40px;
+            background: white;
+            border-bottom: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+        }
+
+        .slot.filled {
+            background: #e8f4fd;
+        }
+
+        .slot.completed {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+        }
+
+        .keyboard {
+            background: #ecf0f1;
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .k-row {
+            display: flex;
+            gap: 3px;
+            justify-content: center;
+        }
+
+        .key {
+            flex: 1;
+            max-width: 35px;
+            aspect-ratio: 1;
+            background: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .key:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .key:active {
+            transform: scale(0.95);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            padding: 5px 0;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-dica {
+            background: #f1c40f;
+            color: #333;
+        }
+
+        .btn-verificar {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-limpar {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            animation: modalPop 0.3s;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .modal-content button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .stars-display {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- TELA DE MENU -->
+        <div id="menu-screen" class="screen-menu">
+            <div class="header-menu">
+                <h1>📖 Palavras Cruzadas</h1>
+                <p style="font-size:0.9em; opacity:0.9;">Edição Bíblica Sagrada</p>
+                <div class="coins">🪙 <span id="coins-display">500</span></div>
+            </div>
+            <div class="stats-bar">
+                <span>⭐ <span id="total-stars">0</span>/150</span>
+                <span>🏆 <span id="completed-levels">0</span>/50</span>
+                <span>📊 Nível <span id="current-level-display">1</span></span>
+            </div>
+            <div class="levels-grid" id="levels-container"></div>
+        </div>
+
+        <!-- TELA DO JOGO -->
+        <div id="game-screen" class="screen-game hidden">
+            <div class="game-header">
+                <button onclick="goToMenu()">← Menu</button>
+                <span id="level-title">Fase 1</span>
+                <button onclick="useHint()">💡 Dica (<span id="hints-count">3</span>)</button>
+            </div>
+            <div class="game-content">
+                <div class="board-container">
+                    <div class="crossword-board" id="board"></div>
+                </div>
+                <div class="clue-panel">
+                    <div class="clue-nav">
+                        <button onclick="prevClue()">◀</button>
+                        <span style="font-weight:bold;" id="clue-direction">VERTICAL</span>
+                        <button onclick="nextClue()">▶</button>
+                    </div>
+                    <div class="clue-text" id="clue-display">Selecione uma palavra</div>
+                </div>
+                <div class="slots-row" id="slots-row"></div>
+                <div class="action-btns">
+                    <button class="action-btn btn-dica" onclick="useHint()">💡 Dica</button>
+                    <button class="action-btn btn-verificar" onclick="verifyWord()">✅ Verificar</button>
+                    <button class="action-btn btn-limpar" onclick="clearWord()">🗑️ Limpar</button>
+                </div>
+                <div class="keyboard" id="keyboard"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== BANCO DE 50 FASES BÍBLICAS =====
+        const allLevels = [
+            // Nível 1-5: Fácil (3 palavras, 4-5 letras)
+            {
+                id: 1,
+                title: "O Princípio",
+                difficulty: 1,
+                gridSize: 8,
+                words: [
+                    { id: 1, answer: "DEUS", clue: "Criador do céu e da terra", row: 1, col: 1, dir: "V", cellText: "O Criador" },
+                    { id: 2, answer: "BIBLIA", clue: "A Palavra de Deus", row: 0, col: 3, dir: "H", cellText: "Livro Sagrado" },
+                    { id: 3, answer: "AMOR", clue: "Deus é ___ (1 João 4:8)", row: 3, col: 2, dir: "V", cellText: "Sentimento" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Os Primeiros",
+                difficulty: 1,
+                gridSize: 8,
+                words: [
+                    { id: 1, answer: "ADAO", clue: "Primeiro homem criado", row: 0, col: 0, dir: "V", cellText: "Homem" },
+                    { id: 2, answer: "EVA", clue: "Primeira mulher", row: 1, col: 2, dir: "H", cellText: "Mulher" },
+                    { id: 3, answer: "EDEN", clue: "Jardim perfeito", row: 3, col: 3, dir: "V", cellText: "Jardim" }
+                ]
+            },
+            {
+                id: 3,
+                title: "Fé e Obediência",
+                difficulty: 1,
+                gridSize: 8,
+                words: [
+                    { id: 1, answer: "NOE", clue: "Construiu a arca", row: 0, col: 1, dir: "H", cellText: "Arca" },
+                    { id: 2, answer: "ARCA", clue: "Salvação do dilúvio", row: 1, col: 3, dir: "V", cellText: "Barco" },
+                    { id: 3, answer: "FE", clue: "Sem ela é impossível agradar a Deus", row: 3, col: 0, dir: "H", cellText: "Crença" }
+                ]
+            },
+            {
+                id: 4,
+                title: "Patriarcas",
+                difficulty: 1,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "ABRAAO", clue: "Pai da fé", row: 0, col: 0, dir: "H", cellText: "Patriarca" },
+                    { id: 2, answer: "ISAC", clue: "Filho da promessa", row: 1, col: 2, dir: "V", cellText: "Promessa" },
+                    { id: 3, answer: "JACO", clue: "Teve 12 filhos", row: 3, col: 4, dir: "V", cellText: "Israel" }
+                ]
+            },
+            {
+                id: 5,
+                title: "Libertação",
+                difficulty: 1,
+                gridSize: 8,
+                words: [
+                    { id: 1, answer: "MOISES", clue: "Líder do êxodo", row: 0, col: 1, dir: "H", cellText: "Líder" },
+                    { id: 2, answer: "MAR", clue: "Se abriu para o povo passar", row: 2, col: 3, dir: "V", cellText: "Vermelho" },
+                    { id: 3, answer: "LEI", clue: "Dez mandamentos", row: 4, col: 0, dir: "H", cellText: "Tora" }
+                ]
+            },
+            // Nível 6-10: Fácil-Médio (3-4 palavras, 5-6 letras)
+            {
+                id: 6,
+                title: "Reis de Israel",
+                difficulty: 2,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "DAVI", clue: "Rei pastor de Israel", row: 0, col: 0, dir: "V", cellText: "Pastor" },
+                    { id: 2, answer: "SALOMAO", clue: "Rei sábio", row: 1, col: 2, dir: "H", cellText: "Sabedoria" },
+                    { id: 3, answer: "TEMPLO", clue: "Casa de Deus em Jerusalém", row: 3, col: 4, dir: "V", cellText: "Santuário" }
+                ]
+            },
+            {
+                id: 7,
+                title: "Profetas",
+                difficulty: 2,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "ISAIAS", clue: "Profeta messiânico", row: 0, col: 0, dir: "V", cellText: "Profeta" },
+                    { id: 2, answer: "JEREMIAS", clue: "Profeta chorão", row: 1, col: 2, dir: "V", cellText: "Lamentações" },
+                    { id: 3, answer: "ELIAS", clue: "Profeta do fogo", row: 2, col: 4, dir: "H", cellText: "Carmelo" }
+                ]
+            },
+            {
+                id: 8,
+                title: "Milagres",
+                difficulty: 2,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "JESUS", clue: "Nome sobre todo nome", row: 0, col: 1, dir: "H", cellText: "Salvador" },
+                    { id: 2, answer: "AGUA", clue: "Transformada em vinho", row: 2, col: 0, dir: "V", cellText: "Caná" },
+                    { id: 3, answer: "PAO", clue: "Multiplicado para 5000", row: 3, col: 3, dir: "H", cellText: "Milagre" }
+                ]
+            },
+            {
+                id: 9,
+                title: "Apóstolos",
+                difficulty: 2,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "PEDRO", clue: "Rocha da igreja", row: 0, col: 0, dir: "V", cellText: "Pescador" },
+                    { id: 2, answer: "PAULO", clue: "Apóstolo dos gentios", row: 1, col: 2, dir: "H", cellText: "Missionário" },
+                    { id: 3, answer: "JOAO", clue: "Discípulo amado", row: 3, col: 4, dir: "V", cellText: "Amor" }
+                ]
+            },
+            {
+                id: 10,
+                title: "Frutos do Espírito",
+                difficulty: 2,
+                gridSize: 9,
+                words: [
+                    { id: 1, answer: "AMOR", clue: "Primeiro fruto do Espírito", row: 0, col: 1, dir: "V", cellText: "Ágape" },
+                    { id: 2, answer: "PAZ", clue: "Que excede todo entendimento", row: 1, col: 3, dir: "H", cellText: "Shalom" },
+                    { id: 3, answer: "GOZO", clue: "Alegria do Senhor", row: 3, col: 0, dir: "V", cellText: "Alegria" }
+                ]
+            },
+            // Continuar gerando mais fases...
+            // Níveis 11-50 com dificuldade progressiva
+            ...generateMoreLevels()
+        ];
+
+        function generateMoreLevels() {
+            const levels = [];
+            const biblicalWords = [
+                { word: "EVANGELHO", clues: ["Boas novas", "Mensagem de salvação"], cell: "Boa Nova" },
+                { word: "SALVACAO", clues: ["Dom de Deus", "Vida eterna"], cell: "Redenção" },
+                { word: "GRACA", clues: ["Favor imerecido", "Presente de Deus"], cell: "Dom" },
+                { word: "BATISMO", clues: ["Mergulho nas águas", "Primeiro mandamento"], cell: "Ordenança" },
+                { word: "CEIA", clues: ["Santa Ceia", "Comunhão"], cell: "Memorial" },
+                { word: "ORACAO", clues: ["Conversa com Deus", "Poderosa"], cell: "Súplica" },
+                { word: "LOUVOR", clues: ["Adoração", "Música para Deus"], cell: "Harpa" },
+                { word: "IGREJA", clues: ["Corpo de Cristo", "Comunidade"], cell: "Eclésia" },
+                { word: "CRUZ", clues: ["Símbolo da fé", "Sacrifício"], cell: "Madeiro" },
+                { word: "RESSURREICAO", clues: ["Cristo venceu a morte", "Páscoa"], cell: "Vitória" },
+                { word: "CEU", clues: ["Morada de Deus", "Paraíso"], cell: "Glória" },
+                { word: "ANJO", clues: ["Mensageiro celestial", "Querubim"], cell: "Serafim" },
+                { word: "PROFECIA", clues: ["Revelação divina", "Predição"], cell: "Oráculo" },
+                { word: "MILAGRE", clues: ["Ato sobrenatural", "Maravilha"], cell: "Prodígio" },
+                { word: "SABEDORIA", clues: ["Dom de Salomão", "Conhecimento"], cell: "Prudência" },
+                { word: "JUSTICA", clues: ["Atributo de Deus", "Equidade"], cell: "Direito" },
+                { word: "MISERICORDIA", clues: ["Compaixão divina", "Bondade"], cell: "Piedade" },
+                { word: "SANTIDADE", clues: ["Pureza", "Separado"], cell: "Kadosh" },
+                { word: "GLORIA", clues: ["Majestade divina", "Esplendor"], cell: "Shekiná" },
+                { word: "ETERNIDADE", clues: ["Vida sem fim", "Infinito"], cell: "Sempiterno" }
+            ];
+
+            for (let i = 11; i <= 50; i++) {
+                const difficulty = Math.ceil(i / 10);
+                const wordCount = Math.min(3 + difficulty, 5);
+                const selectedWords = [];
+                const usedIndices = new Set();
+
+                while (selectedWords.length < wordCount) {
+                    const idx = Math.floor(Math.random() * biblicalWords.length);
+                    if (!usedIndices.has(idx)) {
+                        usedIndices.add(idx);
+                        const bw = biblicalWords[idx];
+                        selectedWords.push({
+                            id: selectedWords.length + 1,
+                            answer: bw.word,
+                            clue: bw.clues[Math.floor(Math.random() * bw.clues.length)],
+                            row: 0,
+                            col: 0,
+                            dir: selectedWords.length % 2 === 0 ? "V" : "H",
+                            cellText: bw.cell
+                        });
+                    }
+                }
+
+                // Posicionar palavras no grid
+                const gridSize = Math.max(8, Math.min(12, 8 + difficulty));
+                let row = 0, col = 0;
+                selectedWords.forEach((w, idx) => {
+                    w.row = row;
+                    w.col = col;
+                    w.dir = idx % 2 === 0 ? "H" : "V";
+                    row = (row + 2) % (gridSize - w.answer.length + 1);
+                    col = (col + 2) % (gridSize - w.answer.length + 1);
+                });
+
+                levels.push({
+                    id: i,
+                    title: `Fase ${i}`,
+                    difficulty: difficulty,
+                    gridSize: gridSize,
+                    words: selectedWords
+                });
+            }
+            return levels;
+        }
+
+        // ===== ESTADO DO JOGO =====
+        let gameState = {
+            currentLevel: null,
+            currentWordIndex: 0,
+            userInput: {},
+            selectedCell: null,
+            coins: 500,
+            hints: 3,
+            completedLevels: new Set(JSON.parse(localStorage.getItem('completedLevels') || '[]')),
+            stars: JSON.parse(localStorage.getItem('stars') || '{}'),
+            revealedLetters: new Set()
+        };
+
+        // ===== INICIALIZAÇÃO =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLevelMenu();
+            updateStats();
+            setupKeyboard();
+        });
+
+        function renderLevelMenu() {
+            const container = document.getElementById('levels-container');
+            container.innerHTML = '';
+            
+            const highestUnlocked = Math.max(...gameState.completedLevels, 0) + 1;
+            
+            allLevels.forEach(level => {
+                const btn = document.createElement('div');
+                btn.className = 'level-btn';
+                
+                if (gameState.completedLevels.has(level.id)) {
+                    btn.classList.add('completed');
+                    const stars = gameState.stars[level.id] || 0;
+                    btn.innerHTML = `${level.id}<br>⭐${stars}`;
+                } else if (level.id === highestUnlocked) {
+                    btn.classList.add('current');
+                    btn.innerHTML = `${level.id}<br>🔓`;
+                } else if (level.id > highestUnlocked) {
+                    btn.classList.add('locked');
+                    btn.innerHTML = `${level.id}<br>🔒`;
+                } else {
+                    btn.innerHTML = `${level.id}<br>⭐0`;
+                }
+                
+                if (level.id <= highestUnlocked) {
+                    btn.onclick = () => startLevel(level.id);
+                }
+                
+                container.appendChild(btn);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('coins-display').textContent = gameState.coins;
+            document.getElementById('hints-count').textContent = gameState.hints;
+            
+            const totalStars = Object.values(gameState.stars).reduce((a, b) => a + b, 0);
+            document.getElementById('total-stars').textContent = totalStars;
+            document.getElementById('completed-levels').textContent = gameState.completedLevels.size;
+        }
+
+        function startLevel(levelId) {
+            gameState.currentLevel = allLevels.find(l => l.id === levelId);
+            gameState.currentWordIndex = 0;
+            gameState.userInput = {};
+            gameState.selectedCell = null;
+            gameState.hints = 3;
+            gameState.revealedLetters = new Set();
+            
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('level-title').textContent = gameState.currentLevel.title;
+            document.getElementById('hints-count').textContent = gameState.hints;
+            
+            renderBoard();
+            updateClueDisplay();
+            renderSlots();
+            setupKeyboard();
+        }
+
+        function goToMenu() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+            renderLevelMenu();
+            updateStats();
+        }
+
+        function renderBoard() {
+            const board = document.getElementById('board');
+            const level = gameState.currentLevel;
+            board.style.gridTemplateColumns = `repeat(${level.gridSize}, 1fr)`;
+            board.innerHTML = '';
+            
+            for (let r = 0; r < level.gridSize; r++) {
+                for (let c = 0; c < level.gridSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    
+                    // Verificar se é célula de pergunta
+                    const questionWord = level.words.find(w => {
+                        if (w.dir === "V") return w.row - 1 === r && w.col === c;
+                        if (w.dir === "H") return w.row === r && w.col - 1 === c;
+                        return false;
+                    });
+                    
+                    if (questionWord) {
+                        cell.classList.add('black');
+                        cell.textContent = questionWord.cellText || questionWord.clue.substring(0, 15);
+                        cell.onclick = () => {
+                            const idx = level.words.indexOf(questionWord);
+                            gameState.currentWordIndex = idx;
+                            updateClueDisplay();
+                            renderBoard();
+                            renderSlots();
+                        };
+                    } else {
+                        // Verificar se pertence a alguma palavra
+                        let belongsToWord = false;
+                        let wordNumber = null;
+                        let wordDir = null;
+                        
+                        level.words.forEach(w => {
+                            for (let i = 0; i < w.answer.length; i++) {
+                                const wr = w.row + (w.dir === "V" ? i : 0);
+                                const wc = w.col + (w.dir === "H" ? i : 0);
+                                if (wr === r && wc === c) {
+                                    belongsToWord = true;
+                                    if (i === 0) {
+                                        wordNumber = w.id;
+                                        wordDir = w.dir;
+                                    }
+                                }
+                            }
+                        });
+                        
+                        if (!belongsToWord) {
+                            cell.classList.add('black');
+                        } else {
+                            if (wordNumber) {
+                                const numSpan = document.createElement('span');
+                                numSpan.className = 'cell-number';
+                                numSpan.textContent = wordNumber;
+                                cell.appendChild(numSpan);
+                                
+                                const arrowSpan = document.createElement('span');
+                                arrowSpan.className = 'cell-arrow';
+                                arrowSpan.textContent = wordDir === 'H' ? '→' : '↓';
+                                cell.appendChild(arrowSpan);
+                            }
+                            
+                            const key = `${r}-${c}`;
+                            if (gameState.userInput[key]) {
+                                cell.textContent = gameState.userInput[key];
+                            }
+                            
+                            cell.onclick = () => {
+                                // Selecionar palavra correta
+                                const wordIdx = level.words.findIndex(w => {
+                                    for (let i = 0; i < w.answer.length; i++) {
+                                        if (w.row + (w.dir === "V" ? i : 0) === r && 
+                                            w.col + (w.dir === "H" ? i : 0) === c) return true;
+                                    }
+                                    return false;
+                                });
+                                if (wordIdx !== -1) gameState.currentWordIndex = wordIdx;
+                                gameState.selectedCell = { row: r, col: c };
+                                renderBoard();
+                                updateClueDisplay();
+                                renderSlots();
+                            };
+                        }
+                    }
+                    
+                    // Destacar célula selecionada
+                    if (gameState.selectedCell && 
+                        gameState.selectedCell.row === r && 
+                        gameState.selectedCell.col === c) {
+                        cell.classList.add('selected');
+                    }
+                    
+                    // Destacar palavra atual
+                    const currentWord = level.words[gameState.currentWordIndex];
+                    for (let i = 0; i < currentWord.answer.length; i++) {
+                        const wr = currentWord.row + (currentWord.dir === "V" ? i : 0);
+                        const wc = currentWord.col + (currentWord.dir === "H" ? i : 0);
+                        if (wr === r && wc === c && !cell.classList.contains('black')) {
+                            cell.classList.add('word-highlight');
+                        }
+                    }
+                    
+                    board.appendChild(cell);
+                }
+            }
+        }
+
+        function updateClueDisplay() {
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            document.getElementById('clue-direction').textContent = 
+                word.dir === 'V' ? 'VERTICAL ↓' : 'HORIZONTAL →';
+            document.getElementById('clue-display').textContent = 
+                `${word.id}. ${word.clue} (${word.answer.length} letras)`;
+        }
+
+        function renderSlots() {
+            const container = document.getElementById('slots-row');
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            container.innerHTML = '';
+            
+            let allFilled = true;
+            let allCorrect = true;
+            
+            for (let i = 0; i < word.answer.length; i++) {
+                const r = word.row + (word.dir === "V" ? i : 0);
+                const c = word.col + (word.dir === "H" ? i : 0);
+                const key = `${r}-${c}`;
+                
+                const slot = document.createElement('div');
+                slot.className = 'slot';
+                
+                if (gameState.userInput[key]) {
+                    slot.textContent = gameState.userInput[key];
+                    slot.classList.add('filled');
+                    if (gameState.userInput[key] !== word.answer[i]) {
+                        allCorrect = false;
+                    }
+                } else {
+                    allFilled = false;
+                }
+                
+                if (allFilled && allCorrect) {
+                    slot.classList.add('completed');
+                }
+                
+                container.appendChild(slot);
+            }
+            
+            // Verificar vitória total
+            if (allFilled && allCorrect) {
+                checkLevelComplete();
+            }
+        }
+
+        function checkLevelComplete() {
+            const level = gameState.currentLevel;
+            let allComplete = true;
+            
+            level.words.forEach(word => {
+                for (let i = 0; i < word.answer.length; i++) {
+                    const r = word.row + (word.dir === "V" ? i : 0);
+                    const c = word.col + (word.dir === "H" ? i : 0);
+                    const key = `${r}-${c}`;
+                    if (!gameState.userInput[key] || gameState.userInput[key] !== word.answer[i]) {
+                        allComplete = false;
+                    }
+                }
+            });
+            
+            if (allComplete) {
+                showVictoryModal();
+            }
+        }
+
+        function showVictoryModal() {
+            const stars = calculateStars();
+            gameState.completedLevels.add(gameState.currentLevel.id);
+            gameState.stars[gameState.currentLevel.id] = stars;
+            gameState.coins += stars * 20;
+            
+            localStorage.setItem('completedLevels', JSON.stringify([...gameState.completedLevels]));
+            localStorage.setItem('stars', JSON.stringify(gameState.stars));
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h2>🎉 Parabéns!</h2>
+                    <p>Você completou ${gameState.currentLevel.title}!</p>
+                    <div class="stars-display">${'⭐'.repeat(stars)}</div>
+                    <p>Ganhou ${stars * 20} 🪙</p>
+                    <button onclick="this.closest('.modal').remove(); goToMenu();">Continuar</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function calculateStars() {
+            const level = gameState.currentLevel;
+            const totalCells = level.words.reduce((sum, w) => sum + w.answer.length, 0);
+            const filledCells = Object.keys(gameState.userInput).length;
+            const ratio = filledCells / totalCells;
+            
+            if (ratio >= 0.95) return 3;
+            if (ratio >= 0.8) return 2;
+            return 1;
+        }
+
+        function setupKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+            keyboard.innerHTML = '';
+            const rows = [
+                ['Q','W','E','R','T','Y','U','I','O','P'],
+                ['A','S','D','F','G','H','J','K','L'],
+                ['Z','X','C','V','B','N','M','⌫']
+            ];
+            
+            rows.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'k-row';
+                row.forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = 'key';
+                    btn.textContent = key;
+                    if (key === '⌫') {
+                        btn.style.maxWidth = '50px';
+                        btn.onclick = () => deleteLetter();
+                    } else {
+                        btn.onclick = () => inputLetter(key);
+                    }
+                    rowDiv.appendChild(btn);
+                });
+                keyboard.appendChild(rowDiv);
+            });
+        }
+
+        function inputLetter(letter) {
+            if (!gameState.selectedCell) {
+                // Selecionar primeira célula vazia da palavra atual
+                const word = gameState.currentLevel.words[gameState.currentWordIndex];
+                for (let i = 0; i < word.answer.length; i++) {
+                    const r = word.row + (word.dir === "V" ? i : 0);
+                    const c = word.col + (word.dir === "H" ? i : 0);
+                    const key = `${r}-${c}`;
+                    if (!gameState.userInput[key]) {
+                        gameState.selectedCell = { row: r, col: c };
+                        break;
+                    }
+                }
+                if (!gameState.selectedCell) return;
+            }
+            
+            const key = `${gameState.selectedCell.row}-${gameState.selectedCell.col}`;
+            gameState.userInput[key] = letter;
+            
+            // Avançar para próxima célula
+            moveToNextCell();
+            
+            renderBoard();
+            renderSlots();
+        }
+
+        function deleteLetter() {
+            if (!gameState.selectedCell) return;
+            const key = `${gameState.selectedCell.row}-${gameState.selectedCell.col}`;
+            delete gameState.userInput[key];
+            renderBoard();
+            renderSlots();
+        }
+
+        function moveToNextCell() {
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            let currentIdx = -1;
+            
+            for (let i = 0; i < word.answer.length; i++) {
+                const r = word.row + (word.dir === "V" ? i : 0);
+                const c = word.col + (word.dir === "H" ? i : 0);
+                if (r === gameState.selectedCell.row && c === gameState.selectedCell.col) {
+                    currentIdx = i;
+                    break;
+                }
+            }
+            
+            if (currentIdx >= 0 && currentIdx < word.answer.length - 1) {
+                const nextIdx = currentIdx + 1;
+                gameState.selectedCell = {
+                    row: word.row + (word.dir === "V" ? nextIdx : 0),
+                    col: word.col + (word.dir === "H" ? nextIdx : 0)
+                };
+            }
+        }
+
+        function prevClue() {
+            gameState.currentWordIndex = 
+                (gameState.currentWordIndex - 1 + gameState.currentLevel.words.length) % 
+                gameState.currentLevel.words.length;
+            gameState.selectedCell = null;
+            updateClueDisplay();
+            renderBoard();
+            renderSlots();
+        }
+
+        function nextClue() {
+            gameState.currentWordIndex = 
+                (gameState.currentWordIndex + 1) % gameState.currentLevel.words.length;
+            gameState.selectedCell = null;
+            updateClueDisplay();
+            renderBoard();
+            renderSlots();
+        }
+
+        function useHint() {
+            if (gameState.hints <= 0) {
+                if (gameState.coins >= 50) {
+                    gameState.coins -= 50;
+                    gameState.hints = 1;
+                } else {
+                    alert('Moedas insuficientes! Complete fases para ganhar mais.');
+                    return;
+                }
+            }
+            
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            const unrevealedIndices = [];
+            
+            for (let i = 0; i < word.answer.length; i++) {
+                const r = word.row + (word.dir === "V" ? i : 0);
+                const c = word.col + (word.dir === "H" ? i : 0);
+                const key = `${r}-${c}`;
+                if (!gameState.revealedLetters.has(key) && 
+                    (!gameState.userInput[key] || gameState.userInput[key] !== word.answer[i])) {
+                    unrevealedIndices.push(i);
+                }
+            }
+            
+            if (unrevealedIndices.length > 0) {
+                const idx = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
+                const r = word.row + (word.dir === "V" ? idx : 0);
+                const c = word.col + (word.dir === "H" ? idx : 0);
+                const key = `${r}-${c}`;
+                
+                gameState.userInput[key] = word.answer[idx];
+                gameState.revealedLetters.add(key);
+                gameState.hints--;
+                
+                document.getElementById('hints-count').textContent = gameState.hints;
+                document.getElementById('coins-display').textContent = gameState.coins;
+                
+                renderBoard();
+                renderSlots();
+            }
+        }
+
+        function verifyWord() {
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            let hasError = false;
+            
+            for (let i = 0; i < word.answer.length; i++) {
+                const r = word.row + (word.dir === "V" ? i : 0);
+                const c = word.col + (word.dir === "H" ? i : 0);
+                const key = `${r}-${c}`;
+                
+                if (gameState.userInput[key] && gameState.userInput[key] !== word.answer[i]) {
+                    hasError = true;
+                    // Mostrar erro visualmente
+                    const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                    if (cell) {
+                        cell.classList.add('wrong');
+                        setTimeout(() => cell.classList.remove('wrong'), 1000);
+                    }
+                }
+            }
+            
+            if (!hasError) {
+                // Verificar se palavra está completa
+                const allFilled = word.answer.every((_, i) => {
+                    const r = word.row + (word.dir === "V" ? i : 0);
+                    const c = word.col + (word.dir === "H" ? i : 0);
+                    return gameState.userInput[`${r}-${c}`];
+                });
+                
+                if (allFilled) {
+                    // Marcar como correta
+                    word.answer.forEach((_, i) => {
+                        const r = word.row + (word.dir === "V" ? i : 0);
+                        const c = word.col + (word.dir === "H" ? i : 0);
+                        const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                        if (cell) {
+                            cell.classList.add('correct');
+                            setTimeout(() => cell.classList.remove('correct'), 1500);
+                        }
+                    });
+                    checkLevelComplete();
+                }
+            }
+        }
+
+        function clearWord() {
+            const word = gameState.currentLevel.words[gameState.currentWordIndex];
+            for (let i = 0; i < word.answer.length; i++) {
+                const r = word.row + (word.dir === "V" ? i : 0);
+                const c = word.col + (word.dir === "H" ? i : 0);
+                const key = `${r}-${c}`;
+                delete gameState.userInput[key];
+            }
+            renderBoard();
+            renderSlots();
+        }
+    </script>
+</body>
+</html>
