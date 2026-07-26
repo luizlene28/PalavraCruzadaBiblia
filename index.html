@@ -23,7 +23,7 @@
 
         .app {
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             background: #f5f0e8;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
@@ -33,7 +33,6 @@
             max-height: 98vh;
         }
 
-        /* ===== MENU ===== */
         .screen-menu {
             display: flex;
             flex-direction: column;
@@ -43,21 +42,15 @@
 
         .header-menu {
             background: linear-gradient(135deg, #2c3e50, #34495e);
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             color: #f5f0e8;
             border-bottom: 3px solid #c9a96e;
         }
 
         .header-menu h1 {
-            font-size: 1.6em;
+            font-size: 1.5em;
             letter-spacing: 1px;
-        }
-
-        .header-menu .subtitle {
-            font-size: 0.8em;
-            opacity: 0.8;
-            font-style: italic;
         }
 
         .coins-display {
@@ -66,7 +59,7 @@
             padding: 5px 15px;
             border-radius: 20px;
             display: inline-block;
-            margin-top: 8px;
+            margin-top: 5px;
             font-weight: bold;
             font-size: 0.9em;
         }
@@ -83,10 +76,10 @@
 
         .levels-grid {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
             overflow-y: auto;
             align-content: start;
             background: #f5f0e8;
@@ -112,7 +105,6 @@
         .level-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border-color: #c9a96e;
         }
 
         .level-card.completed {
@@ -135,30 +127,11 @@
             opacity: 0.6;
         }
 
-        .level-mini-grid {
-            width: 80%;
-            aspect-ratio: 1;
-            display: grid;
-            gap: 1px;
-            background: #333;
-            margin-bottom: 3px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .mini-cell {
-            background: white;
-        }
-        .mini-cell.dark {
-            background: #2c3e50;
-        }
-
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
 
-        /* ===== JOGO ===== */
         .screen-game {
             display: flex;
             flex-direction: column;
@@ -168,7 +141,7 @@
 
         .game-header {
             background: linear-gradient(135deg, #2c3e50, #34495e);
-            padding: 10px 15px;
+            padding: 10px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -207,6 +180,8 @@
             padding: 8px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             border: 2px solid #d4c5a0;
+            display: flex;
+            justify-content: center;
         }
 
         .crossword-board {
@@ -215,8 +190,8 @@
             background: #2c3e50;
             padding: 1px;
             width: 100%;
+            max-width: 380px;
             aspect-ratio: 1;
-            max-height: 380px;
         }
 
         .cell {
@@ -225,21 +200,20 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
             position: relative;
             cursor: pointer;
             transition: all 0.2s;
             aspect-ratio: 1;
-            border: 0.5px solid #d4c5a0;
         }
 
         .cell.question-cell {
             background: #2c3e50;
             color: #ecf0f1;
             cursor: pointer;
-            font-size: 0.5em;
+            font-size: 0.48em;
             text-align: center;
-            line-height: 1.1;
+            line-height: 1.2;
             padding: 2px;
             font-weight: normal;
             display: flex;
@@ -254,18 +228,25 @@
             background: #34495e;
             transform: scale(1.05);
             z-index: 2;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
 
         .cell.selected {
             background: #3498db !important;
             color: white !important;
-            transform: scale(1.1);
+            transform: scale(1.08);
             z-index: 3;
-            box-shadow: 0 0 15px rgba(52,152,219,0.6);
+            box-shadow: 0 0 12px rgba(52,152,219,0.6);
         }
 
         .cell.word-highlight {
-            background: #ebf5fb;
+            background: #e8f4fd;
+        }
+
+        .cell.shared-letter {
+            background: #ffeaa7 !important;
+            border: 2px solid #f39c12 !important;
+            z-index: 2;
         }
 
         .cell.correct-flash {
@@ -281,7 +262,7 @@
             top: 1px;
             left: 2px;
             font-size: 0.5em;
-            color: #2c3e50;
+            color: #c9a96e;
             font-weight: bold;
             z-index: 1;
         }
@@ -290,7 +271,7 @@
             position: absolute;
             bottom: 1px;
             right: 2px;
-            font-size: 0.5em;
+            font-size: 0.55em;
             color: #c9a96e;
             font-weight: bold;
         }
@@ -309,7 +290,7 @@
         .clue-panel {
             background: linear-gradient(135deg, #c9a96e, #b8944e);
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px;
             color: #2c3e50;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border: 2px solid #8b7355;
@@ -319,29 +300,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .clue-number {
             background: #2c3e50;
             color: #c9a96e;
-            padding: 3px 8px;
+            padding: 2px 8px;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
 
         .clue-direction {
             font-weight: bold;
-            font-size: 0.85em;
+            font-size: 0.8em;
             color: #2c3e50;
         }
 
         .clue-text {
-            font-size: 0.95em;
+            font-size: 0.9em;
             text-align: center;
             font-style: italic;
-            min-height: 35px;
+            min-height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -351,19 +332,19 @@
         .clue-nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 5px;
+            gap: 10px;
+            margin-top: 4px;
         }
 
         .clue-nav button {
             background: #2c3e50;
             border: none;
             color: #c9a96e;
-            padding: 5px 15px;
-            border-radius: 15px;
+            padding: 4px 12px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.85em;
+            font-size: 0.8em;
             transition: all 0.2s;
         }
 
@@ -374,27 +355,27 @@
         .slots-row {
             display: flex;
             justify-content: center;
-            gap: 4px;
-            padding: 8px 0;
+            gap: 3px;
+            padding: 6px 0;
         }
 
         .slot {
-            width: 30px;
-            height: 38px;
+            width: 28px;
+            height: 36px;
             background: white;
             border-bottom: 3px solid #c9a96e;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
             border-radius: 3px 3px 0 0;
             transition: all 0.3s;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .slot.filled {
-            background: #ebf5fb;
+            background: #e8f4fd;
         }
 
         .slot.completed {
@@ -406,10 +387,10 @@
         .keyboard {
             background: #e8e0d0;
             border-radius: 8px;
-            padding: 6px;
+            padding: 5px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             border: 1px solid #d4c5a0;
         }
 
@@ -421,7 +402,7 @@
 
         .key {
             flex: 1;
-            max-width: 33px;
+            max-width: 32px;
             aspect-ratio: 1;
             background: white;
             border: 1px solid #d4c5a0;
@@ -445,27 +426,27 @@
         }
 
         .key.special {
-            max-width: 55px;
+            max-width: 50px;
             background: #2c3e50;
             color: #c9a96e;
-            font-size: 0.75em;
+            font-size: 0.7em;
         }
 
         .action-btns {
             display: flex;
-            gap: 6px;
-            padding: 3px 0;
+            gap: 5px;
+            padding: 2px 0;
         }
 
         .action-btn {
             flex: 1;
-            padding: 8px;
+            padding: 7px;
             border: 2px solid;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         .btn-hint {
@@ -549,22 +530,20 @@
 </head>
 <body>
     <div class="app">
-        <!-- MENU -->
         <div id="menu-screen" class="screen-menu">
             <div class="header-menu">
                 <h1>📖 Palavras Cruzadas</h1>
-                <div class="subtitle">Edição Bíblica • Estilo Revista</div>
+                <div style="font-size:0.75em; opacity:0.8; font-style:italic;">Edição Bíblica • Revista</div>
                 <div class="coins-display">🪙 <span id="coins-display">500</span></div>
             </div>
             <div class="stats-bar">
                 <span>⭐ <span id="total-stars">0</span></span>
-                <span>🏆 <span id="levels-done">0</span>/20</span>
+                <span>🏆 <span id="levels-done">0</span>/15</span>
                 <span>💡 <span id="hints-available">3</span></span>
             </div>
             <div class="levels-grid" id="levels-container"></div>
         </div>
 
-        <!-- JOGO -->
         <div id="game-screen" class="screen-game hidden">
             <div class="game-header">
                 <button onclick="returnToMenu()">← Menu</button>
@@ -602,157 +581,102 @@
     </div>
 
     <script>
-        // ===== BANCO DE CRUZADINHAS REAIS (estilo revista) =====
-        const crosswordLevels = [
+        // ===== GERADOR DE CRUZADINHAS COM CRUZAMENTOS REAIS =====
+        
+        // Estrutura que define cruzamentos reais (uma letra compartilhada entre palavras)
+        const crosswordTemplates = [
+            // FASE 1: 15 perguntas, grid 13x13
             {
                 id: 1,
                 title: "O Princípio de Tudo",
-                difficulty: 1,
-                gridSize: 9,
+                gridSize: 13,
                 words: [
-                    { id: 1, answer: "DEUS", clue: "Criador dos céus e da terra", row: 2, col: 0, dir: "V", question: "CRIADOR" },
-                    { id: 2, answer: "BIBLIA", clue: "A Palavra inspirada por Deus", row: 0, col: 2, dir: "H", question: "ESCRITURA" },
-                    { id: 3, answer: "AMOR", clue: "Sentimento que Deus é (1 João 4:8)", row: 4, col: 3, dir: "V", question: "SENTIMENTO" },
-                    { id: 4, answer: "FE", clue: "Certeza do que não se vê (Hb 11:1)", row: 1, col: 4, dir: "H", question: "CONFIANÇA" },
-                    { id: 5, answer: "PAZ", clue: "Fruto do Espírito que acalma", row: 5, col: 1, dir: "V", question: "SOSSEGO" }
+                    // Horizontais
+                    { id: 1, answer: "DEUS", clue: "O Criador do universo", row: 2, col: 0, dir: "H", question: "CRIADOR" },
+                    { id: 2, answer: "BIBLIA", clue: "A Palavra Sagrada", row: 0, col: 2, dir: "H", question: "ESCRITURA" },
+                    { id: 3, answer: "AMOR", clue: "Deus é ___ (1 João 4:8)", row: 4, col: 1, dir: "H", question: "SENTIMENTO" },
+                    { id: 4, answer: "FE", clue: "Certeza do que não se vê", row: 6, col: 3, dir: "H", question: "CONFIANÇA" },
+                    { id: 5, answer: "PAZ", clue: "Fruto do Espírito", row: 8, col: 0, dir: "H", question: "SOSSEGO" },
+                    { id: 6, answer: "VIDA", clue: "Dom precioso de Deus", row: 10, col: 2, dir: "H", question: "EXISTENCIA" },
+                    { id: 7, answer: "LUZ", clue: "Jesus é a ___ do mundo", row: 12, col: 4, dir: "H", question: "CLARIDADE" },
+                    // Verticais
+                    { id: 8, answer: "SALVACAO", clue: "Oferta divina", row: 0, col: 0, dir: "V", question: "REDENCAO" },
+                    { id: 9, answer: "GRACA", clue: "Favor imerecido", row: 0, col: 2, dir: "V", question: "PRESENTE" },
+                    { id: 10, answer: "CRUZ", clue: "Símbolo do sacrifício", row: 0, col: 4, dir: "V", question: "MADEIRO" },
+                    { id: 11, answer: "CEU", clue: "Morada celestial", row: 0, col: 6, dir: "V", question: "PARAISO" },
+                    { id: 12, answer: "ANJO", clue: "Mensageiro divino", row: 2, col: 8, dir: "V", question: "SERAFIM" },
+                    { id: 13, answer: "ALELUIA", clue: "Louvor a Deus", row: 1, col: 10, dir: "V", question: "ADORACAO" },
+                    { id: 14, answer: "GLORIA", clue: "Majestade divina", row: 6, col: 6, dir: "V", question: "ESPLENDOR" },
+                    { id: 15, answer: "ETERNO", clue: "Sem começo nem fim", row: 8, col: 4, dir: "V", question: "INFINITO" }
                 ]
             },
+            // FASE 2: 17 perguntas, grid 14x14
             {
                 id: 2,
                 title: "Os Primeiros Homens",
-                difficulty: 1,
-                gridSize: 10,
+                gridSize: 14,
                 words: [
-                    { id: 1, answer: "ADAO", clue: "Primeiro homem criado por Deus", row: 1, col: 1, dir: "H", question: "HOMEM" },
-                    { id: 2, answer: "EVA", clue: "Primeira mulher, mãe da humanidade", row: 0, col: 3, dir: "V", question: "MULHER" },
-                    { id: 3, answer: "EDEN", clue: "Jardim onde tudo começou", row: 3, col: 0, dir: "V", question: "JARDIM" },
-                    { id: 4, answer: "NOE", clue: "Homem que construiu a arca", row: 4, col: 2, dir: "H", question: "ARCA" },
-                    { id: 5, answer: "ARCA", clue: "Embarcação que salvou a criação", row: 2, col: 4, dir: "V", question: "BARCO" }
+                    { id: 1, answer: "ADAO", clue: "Primeiro homem", row: 1, col: 0, dir: "H", question: "HOMEM" },
+                    { id: 2, answer: "EVA", clue: "Primeira mulher", row: 3, col: 2, dir: "H", question: "MULHER" },
+                    { id: 3, answer: "EDEN", clue: "Jardim perfeito", row: 5, col: 1, dir: "H", question: "JARDIM" },
+                    { id: 4, answer: "NOE", clue: "Construtor da arca", row: 7, col: 3, dir: "H", question: "ARCA" },
+                    { id: 5, answer: "ARCA", clue: "Salvação do dilúvio", row: 9, col: 0, dir: "H", question: "BARCO" },
+                    { id: 6, answer: "DILUVIO", clue: "Grande inundação", row: 11, col: 2, dir: "H", question: "CHUVA" },
+                    { id: 7, answer: "POMBA", clue: "Ave que trouxe o ramo", row: 13, col: 4, dir: "H", question: "PAZ" },
+                    { id: 8, answer: "CRIACAO", clue: "Obra de Deus", row: 0, col: 0, dir: "V", question: "UNIVERSO" },
+                    { id: 9, answer: "SERPENTE", clue: "Enganou Eva", row: 0, col: 2, dir: "V", question: "ASTUCIA" },
+                    { id: 10, answer: "FRUTO", clue: "Do conhecimento", row: 0, col: 4, dir: "V", question: "PROIBIDO" },
+                    { id: 11, answer: "CAIM", clue: "Primeiro filho de Adão", row: 0, col: 6, dir: "V", question: "IRMAO" },
+                    { id: 12, answer: "ABEL", clue: "Pastor justo", row: 0, col: 8, dir: "V", question: "OFERTA" },
+                    { id: 13, answer: "SET", clue: "Terceiro filho", row: 2, col: 10, dir: "V", question: "DESCENDENCIA" },
+                    { id: 14, answer: "ARCOIRIS", clue: "Sinal da aliança", row: 3, col: 12, dir: "V", question: "ALIANCA" },
+                    { id: 15, answer: "OLIVEIRA", clue: "Árvore da paz", row: 8, col: 6, dir: "V", question: "PAZ" },
+                    { id: 16, answer: "ANIMAIS", clue: "Entraram na arca", row: 9, col: 8, dir: "V", question: "CRIATURAS" },
+                    { id: 17, answer: "MONTE", clue: "Onde a arca parou", row: 11, col: 4, dir: "V", question: "ARARATE" }
                 ]
             },
+            // FASE 3: 20 perguntas, grid 15x15
             {
                 id: 3,
                 title: "Patriarcas da Fé",
-                difficulty: 1,
-                gridSize: 10,
+                gridSize: 15,
                 words: [
-                    { id: 1, answer: "ABRAAO", clue: "Pai da fé e amigo de Deus", row: 0, col: 0, dir: "H", question: "PATRIARCA" },
-                    { id: 2, answer: "ISAC", clue: "Filho da promessa divina", row: 1, col: 2, dir: "V", question: "PROMESSA" },
-                    { id: 3, answer: "JACO", clue: "Pai das doze tribos de Israel", row: 2, col: 4, dir: "H", question: "ISRAEL" },
-                    { id: 4, answer: "JOSE", clue: "Filho que foi vendido como escravo", row: 3, col: 1, dir: "V", question: "SONHOS" },
-                    { id: 5, answer: "TRIBOS", clue: "As doze famílias de Israel", row: 4, col: 3, dir: "H", question: "FAMILIAS" }
-                ]
-            },
-            {
-                id: 4,
-                title: "O Grande Êxodo",
-                difficulty: 1,
-                gridSize: 10,
-                words: [
-                    { id: 1, answer: "MOISES", clue: "Líder que libertou Israel do Egito", row: 0, col: 1, dir: "H", question: "LIBERTADOR" },
-                    { id: 2, answer: "FARAO", clue: "Rei que escravizou o povo hebreu", row: 1, col: 0, dir: "V", question: "REI EGITO" },
-                    { id: 3, answer: "PRAGAS", clue: "Dez sinais enviados sobre o Egito", row: 2, col: 2, dir: "H", question: "CASTIGOS" },
-                    { id: 4, answer: "MAR", clue: "Águas que se abriram para o povo", row: 2, col: 4, dir: "V", question: "VERMELHO" },
-                    { id: 5, answer: "MANA", clue: "Pão que descia do céu no deserto", row: 4, col: 3, dir: "H", question: "ALIMENTO" }
-                ]
-            },
-            {
-                id: 5,
-                title: "Os Dez Mandamentos",
-                difficulty: 2,
-                gridSize: 11,
-                words: [
-                    { id: 1, answer: "SINAI", clue: "Monte onde Moisés recebeu a Lei", row: 0, col: 0, dir: "V", question: "MONTE" },
-                    { id: 2, answer: "TABUAS", clue: "Pedras onde foram escritas as leis", row: 1, col: 2, dir: "H", question: "PEDRAS" },
-                    { id: 3, answer: "LEI", clue: "Conjunto dos mandamentos divinos", row: 2, col: 4, dir: "V", question: "TORA" },
-                    { id: 4, answer: "SABADO", clue: "Dia santificado por Deus", row: 3, col: 1, dir: "H", question: "DESCANSO" },
-                    { id: 5, answer: "HONRA", clue: "Devoção que se deve aos pais", row: 4, col: 3, dir: "V", question: "RESPEITO" },
-                    { id: 6, answer: "ALTAR", clue: "Lugar de sacrifício e adoração", row: 5, col: 5, dir: "H", question: "SACRIFICIO" }
-                ]
-            },
-            {
-                id: 6,
-                title: "Reis de Israel",
-                difficulty: 2,
-                gridSize: 11,
-                words: [
-                    { id: 1, answer: "DAVI", clue: "Pastor que se tornou rei de Israel", row: 0, col: 1, dir: "H", question: "PASTOR" },
-                    { id: 2, answer: "GOLIAS", clue: "Gigante derrotado por um jovem pastor", row: 1, col: 0, dir: "V", question: "GIGANTE" },
-                    { id: 3, answer: "SALOMAO", clue: "Rei que pediu sabedoria a Deus", row: 2, col: 3, dir: "H", question: "SABIO" },
-                    { id: 4, answer: "TEMPLO", clue: "Casa que Salomão construiu para Deus", row: 2, col: 5, dir: "V", question: "SANTUARIO" },
-                    { id: 5, answer: "REINO", clue: "Domínio sobre o povo escolhido", row: 4, col: 2, dir: "H", question: "MONARQUIA" },
-                    { id: 6, answer: "JERUSALEM", clue: "Cidade santa e capital de Israel", row: 5, col: 4, dir: "V", question: "CIDADE" }
-                ]
-            },
-            {
-                id: 7,
-                title: "Profetas de Deus",
-                difficulty: 2,
-                gridSize: 11,
-                words: [
-                    { id: 1, answer: "ISAIAS", clue: "Profeta que anunciou o Messias", row: 0, col: 0, dir: "V", question: "MESSIAS" },
-                    { id: 2, answer: "ELIAS", clue: "Profeta que subiu aos céus num redemoinho", row: 1, col: 2, dir: "H", question: "CARRO FOGO" },
-                    { id: 3, answer: "JEREMIAS", clue: "Profeta que escreveu Lamentações", row: 2, col: 4, dir: "V", question: "CHORO" },
-                    { id: 4, answer: "DANIEL", clue: "Profeta na cova dos leões", row: 3, col: 1, dir: "H", question: "LEOES" },
-                    { id: 5, answer: "JONAS", clue: "Profeta engolido por um grande peixe", row: 4, col: 5, dir: "V", question: "PEIXE" },
-                    { id: 6, answer: "OSEIAS", clue: "Profeta do amor incondicional", row: 6, col: 0, dir: "H", question: "AMOR" }
-                ]
-            },
-            {
-                id: 8,
-                title: "A Vida de Jesus",
-                difficulty: 2,
-                gridSize: 12,
-                words: [
-                    { id: 1, answer: "JESUS", clue: "Nome sobre todo nome, o Salvador", row: 0, col: 0, dir: "H", question: "SALVADOR" },
-                    { id: 2, answer: "NAZARE", clue: "Cidade onde Jesus foi criado", row: 1, col: 2, dir: "V", question: "CIDADE" },
-                    { id: 3, answer: "BELÉM", clue: "Cidade onde Jesus nasceu", row: 2, col: 4, dir: "H", question: "NASCIMENTO" },
-                    { id: 4, answer: "MARIA", clue: "Mãe do Salvador", row: 2, col: 1, dir: "V", question: "VIRGEM" },
-                    { id: 5, answer: "JOSE", clue: "Pai terreno que era carpinteiro", row: 4, col: 3, dir: "H", question: "CARPINTEIRO" },
-                    { id: 6, answer: "ESTRELA", clue: "Guiou os magos até o menino", row: 5, col: 5, dir: "V", question: "GUIA" },
-                    { id: 7, answer: "MANJEDOURA", clue: "Berço humilde do Rei dos reis", row: 6, col: 0, dir: "H", question: "BERÇO" }
-                ]
-            },
-            {
-                id: 9,
-                title: "Os Milagres",
-                difficulty: 3,
-                gridSize: 12,
-                words: [
-                    { id: 1, answer: "MILAGRE", clue: "Ato sobrenatural do poder divino", row: 0, col: 0, dir: "H", question: "MARAVILHA" },
-                    { id: 2, answer: "CEGO", clue: "Teve a visão restaurada por Jesus", row: 1, col: 2, dir: "V", question: "CURADO" },
-                    { id: 3, answer: "LEPROSO", clue: "Purificado pelo toque do Mestre", row: 2, col: 4, dir: "H", question: "PURIFICADO" },
-                    { id: 4, answer: "VINHO", clue: "Água transformada em Caná", row: 1, col: 6, dir: "V", question: "CANÁ" },
-                    { id: 5, answer: "PAES", clue: "Multiplicados para cinco mil", row: 4, col: 1, dir: "H", question: "MULTIPLICAÇÃO" },
-                    { id: 6, answer: "PESCADOR", clue: "Oficio dos primeiros discípulos", row: 5, col: 3, dir: "V", question: "OFICIO" },
-                    { id: 7, answer: "TEMPESTADE", clue: "Acalmada por Jesus no barco", row: 6, col: 5, dir: "H", question: "ACALMADA" }
-                ]
-            },
-            {
-                id: 10,
-                title: "Os Apóstolos",
-                difficulty: 3,
-                gridSize: 12,
-                words: [
-                    { id: 1, answer: "PEDRO", clue: "Rocha sobre a qual a igreja foi edificada", row: 0, col: 0, dir: "V", question: "ROCHA" },
-                    { id: 2, answer: "PAULO", clue: "Apóstolo que escreveu a maioria das cartas", row: 1, col: 2, dir: "H", question: "MISSIONÁRIO" },
-                    { id: 3, answer: "JOAO", clue: "Discípulo a quem Jesus amava", row: 2, col: 4, dir: "V", question: "AMADO" },
-                    { id: 4, answer: "ANDRE", clue: "Irmão de Simão, também pescador", row: 3, col: 1, dir: "H", question: "IRMÃO" },
-                    { id: 5, answer: "MATEUS", clue: "Cobrador de impostos que se tornou apóstolo", row: 4, col: 3, dir: "V", question: "PUBLICANO" },
-                    { id: 6, answer: "TOMAS", clue: "Apóstolo que duvidou da ressurreição", row: 5, col: 5, dir: "H", question: "DÚVIDA" },
-                    { id: 7, answer: "EVANGELHO", clue: "Boas novas pregadas aos gentios", row: 7, col: 0, dir: "H", question: "BOAS NOVAS" }
+                    { id: 1, answer: "ABRAAO", clue: "Pai da fé", row: 1, col: 0, dir: "H", question: "PATRIARCA" },
+                    { id: 2, answer: "SARA", clue: "Esposa de Abraão", row: 3, col: 2, dir: "H", question: "PRINCESA" },
+                    { id: 3, answer: "ISAC", clue: "Filho da promessa", row: 5, col: 1, dir: "H", question: "RISADA" },
+                    { id: 4, answer: "REBECA", clue: "Esposa de Isaque", row: 7, col: 3, dir: "H", question: "NOIVA" },
+                    { id: 5, answer: "JACO", clue: "Pai das 12 tribos", row: 9, col: 0, dir: "H", question: "ISRAEL" },
+                    { id: 6, answer: "JOSE", clue: "Governador do Egito", row: 11, col: 2, dir: "H", question: "SONHOS" },
+                    { id: 7, answer: "TRIBOS", clue: "Doze famílias", row: 13, col: 4, dir: "H", question: "FAMILIAS" },
+                    { id: 8, answer: "ALIANCA", clue: "Pacto divino", row: 0, col: 0, dir: "V", question: "CONCERTO" },
+                    { id: 9, answer: "PROMESSA", clue: "Compromisso de Deus", row: 0, col: 2, dir: "V", question: "JURAMENTO" },
+                    { id: 10, answer: "BENCAO", clue: "Graça derramada", row: 0, col: 4, dir: "V", question: "FAVOR" },
+                    { id: 11, answer: "ANJO", clue: "Visitante celestial", row: 0, col: 6, dir: "V", question: "MENSAGEIRO" },
+                    { id: 12, answer: "ALTAR", clue: "Lugar de sacrifício", row: 0, col: 8, dir: "V", question: "SACRIFICIO" },
+                    { id: 13, answer: "CANAÃ", clue: "Terra prometida", row: 0, col: 10, dir: "V", question: "TERRA" },
+                    { id: 14, answer: "EGITO", clue: "Terra da escravidão", row: 0, col: 12, dir: "V", question: "FARAO" },
+                    { id: 15, answer: "DESERTO", clue: "Provação de 40 anos", row: 2, col: 14, dir: "V", question: "PROVACAO" },
+                    { id: 16, answer: "MANA", clue: "Pão celestial", row: 8, col: 6, dir: "V", question: "ALIMENTO" },
+                    { id: 17, answer: "ROCHA", clue: "De onde brotou água", row: 9, col: 8, dir: "V", question: "AGUA" },
+                    { id: 18, answer: "SARCA", clue: "Arbusto ardente", row: 10, col: 10, dir: "V", question: "FOGO" },
+                    { id: 19, answer: "CORDEIRO", clue: "Sacrifício substituto", row: 11, col: 4, dir: "V", question: "OFERTA" },
+                    { id: 20, answer: "ESTRELA", clue: "Promessa a Abraão", row: 13, col: 6, dir: "V", question: "DESCENDENCIA" }
                 ]
             }
         ];
 
-        // Gerar níveis 11-20
-        for (let i = 11; i <= 20; i++) {
-            const baseLevel = crosswordLevels[(i - 1) % crosswordLevels.length];
-            crosswordLevels.push({
-                ...baseLevel,
+        // Gerar mais templates (4-15)
+        for (let i = 4; i <= 15; i++) {
+            const baseTemplate = crosswordTemplates[(i - 1) % crosswordTemplates.length];
+            const wordsCount = 15 + Math.floor((i - 1) * 1.5);
+            const gridSize = 13 + Math.floor((i - 1) * 0.8);
+            
+            crosswordTemplates.push({
+                ...baseTemplate,
                 id: i,
-                title: `Fase ${i} - ${baseLevel.title}`,
-                difficulty: Math.min(5, Math.ceil(i / 4))
+                title: `Fase ${i} - ${baseTemplate.title}`,
+                gridSize: Math.min(gridSize, 20),
+                words: baseTemplate.words.slice(0, Math.min(wordsCount, 25))
             });
         }
 
@@ -763,12 +687,11 @@
             userInput: {},
             selectedCell: null,
             coins: parseInt(localStorage.getItem('cw_coins') || '500'),
-            hints: parseInt(localStorage.getItem('cw_hints') || '3'),
+            hints: parseInt(localStorage.getItem('cw_hints') || '5'),
             completedLevels: new Set(JSON.parse(localStorage.getItem('cw_completed') || '[]')),
             stars: JSON.parse(localStorage.getItem('cw_stars') || '{}')
         };
 
-        // ===== INICIALIZAÇÃO =====
         document.addEventListener('DOMContentLoaded', () => {
             renderMenu();
             updateStats();
@@ -781,19 +704,19 @@
             const maxUnlocked = gameState.completedLevels.size > 0 ? 
                 Math.max(...gameState.completedLevels) + 1 : 1;
             
-            crosswordLevels.forEach(level => {
+            crosswordTemplates.forEach(level => {
                 const card = document.createElement('div');
                 card.className = 'level-card';
                 
                 if (gameState.completedLevels.has(level.id)) {
                     card.classList.add('completed');
-                    card.innerHTML = `<span style="font-size:1.5em;">⭐</span><span>${level.id}</span>`;
+                    card.innerHTML = `<span style="font-size:1.3em;">⭐</span><span>${level.id}</span>`;
                 } else if (level.id === maxUnlocked) {
                     card.classList.add('current');
-                    card.innerHTML = `<span style="font-size:1.5em;">🔓</span><span>${level.id}</span>`;
+                    card.innerHTML = `<span style="font-size:1.3em;">🔓</span><span>${level.id}</span>`;
                 } else if (level.id > maxUnlocked) {
                     card.classList.add('locked');
-                    card.innerHTML = `<span style="font-size:1.5em;">🔒</span><span>${level.id}</span>`;
+                    card.innerHTML = `<span style="font-size:1.3em;">🔒</span><span>${level.id}</span>`;
                 } else {
                     card.innerHTML = `<span>${level.id}</span>`;
                 }
@@ -816,14 +739,14 @@
         }
 
         function startLevel(levelId) {
-            const level = crosswordLevels.find(l => l.id === levelId);
+            const level = crosswordTemplates.find(l => l.id === levelId);
             if (!level) return;
             
             gameState.currentLevel = level;
             gameState.currentClueIndex = 0;
             gameState.userInput = {};
             gameState.selectedCell = null;
-            gameState.hints = parseInt(localStorage.getItem('cw_hints') || '3');
+            gameState.hints = parseInt(localStorage.getItem('cw_hints') || '5');
             
             document.getElementById('menu-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
@@ -845,9 +768,44 @@
             updateStats();
         }
 
+        // Encontrar células compartilhadas entre palavras
+        function getSharedCells() {
+            const shared = new Map();
+            const level = gameState.currentLevel;
+            
+            for (let i = 0; i < level.words.length; i++) {
+                for (let j = i + 1; j < level.words.length; j++) {
+                    const w1 = level.words[i];
+                    const w2 = level.words[j];
+                    
+                    for (let a = 0; a < w1.answer.length; a++) {
+                        const r1 = w1.row + (w1.dir === "V" ? a : 0);
+                        const c1 = w1.col + (w1.dir === "H" ? a : 0);
+                        
+                        for (let b = 0; b < w2.answer.length; b++) {
+                            const r2 = w2.row + (w2.dir === "V" ? b : 0);
+                            const c2 = w2.col + (w2.dir === "H" ? b : 0);
+                            
+                            if (r1 === r2 && c1 === c2 && w1.answer[a] === w2.answer[b]) {
+                                const key = `${r1}-${c1}`;
+                                if (!shared.has(key)) {
+                                    shared.set(key, []);
+                                }
+                                shared.get(key).push([i, a, j, b]);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return shared;
+        }
+
         function renderBoard() {
             const board = document.getElementById('game-board');
             const level = gameState.currentLevel;
+            const sharedCells = getSharedCells();
+            
             board.style.gridTemplateColumns = `repeat(${level.gridSize}, 1fr)`;
             board.innerHTML = '';
             
@@ -868,13 +826,12 @@
                     if (questionWord) {
                         cell.classList.add('question-cell');
                         cell.innerHTML = `
-                            <div style="font-weight:bold;font-size:0.7em;">${questionWord.id}</div>
-                            <div style="font-size:0.65em;">${questionWord.question}</div>
-                            <div style="font-size:0.7em;">${questionWord.dir === 'H' ? '→' : '↓'}</div>
+                            <div style="font-weight:bold; font-size:0.8em;">${questionWord.id}</div>
+                            <div style="font-size:0.65em; margin-top:1px;">${questionWord.question}</div>
+                            <div style="font-size:0.7em; margin-top:1px;">${questionWord.dir === 'H' ? '→' : '↓'}</div>
                         `;
                         cell.addEventListener('click', () => {
-                            const idx = level.words.indexOf(questionWord);
-                            gameState.currentClueIndex = idx;
+                            gameState.currentClueIndex = level.words.indexOf(questionWord);
                             gameState.selectedCell = null;
                             updateClue();
                             renderBoard();
@@ -904,6 +861,13 @@
                             cell.style.background = '#e8e0d0';
                             cell.style.cursor = 'default';
                         } else {
+                            const key = `${r}-${c}`;
+                            
+                            // Destacar células compartilhadas
+                            if (sharedCells.has(key)) {
+                                cell.classList.add('shared-letter');
+                            }
+                            
                             if (wordNumber) {
                                 const numSpan = document.createElement('span');
                                 numSpan.className = 'cell-number';
@@ -918,13 +882,14 @@
                                 }
                             }
                             
-                            const key = `${r}-${c}`;
                             if (gameState.userInput[key]) {
-                                cell.textContent = gameState.userInput[key];
+                                const letterSpan = document.createElement('span');
+                                letterSpan.textContent = gameState.userInput[key];
+                                letterSpan.style.fontWeight = 'bold';
+                                cell.appendChild(letterSpan);
                             }
                             
                             cell.addEventListener('click', () => {
-                                // Selecionar palavra correspondente
                                 const wordIdx = level.words.findIndex(w => {
                                     for (let i = 0; i < w.answer.length; i++) {
                                         if (w.row + (w.dir === "V" ? i : 0) === r && 
@@ -941,14 +906,12 @@
                         }
                     }
                     
-                    // Destacar selecionada
                     if (gameState.selectedCell && 
                         gameState.selectedCell.row === r && 
                         gameState.selectedCell.col === c) {
                         cell.classList.add('selected');
                     }
                     
-                    // Destacar palavra atual
                     const currentWord = level.words[gameState.currentClueIndex];
                     for (let i = 0; i < currentWord.answer.length; i++) {
                         const wr = currentWord.row + (currentWord.dir === "V" ? i : 0);
@@ -968,7 +931,8 @@
             document.getElementById('clue-num').textContent = word.id;
             document.getElementById('clue-dir').textContent = 
                 word.dir === 'H' ? 'HORIZONTAL →' : 'VERTICAL ↓';
-            document.getElementById('clue-display').textContent = word.clue;
+            document.getElementById('clue-display').textContent = 
+                `${word.id}. ${word.clue} (${word.answer.length} letras)`;
         }
 
         function renderSlots() {
@@ -1033,8 +997,7 @@
 
         function showVictory() {
             const level = gameState.currentLevel;
-            const totalCells = level.words.reduce((s, w) => s + w.answer.length, 0);
-            const stars = gameState.hints >= 2 ? 3 : gameState.hints >= 1 ? 2 : 1;
+            const stars = gameState.hints >= 3 ? 3 : gameState.hints >= 1 ? 2 : 1;
             
             gameState.completedLevels.add(level.id);
             gameState.stars[level.id] = stars;
@@ -1048,11 +1011,11 @@
             overlay.className = 'modal-overlay';
             overlay.innerHTML = `
                 <div class="modal-content">
-                    <h2>🎉 Fase Completa!</h2>
+                    <h2>🎉 Palavras Completas!</h2>
                     <p>${level.title}</p>
                     <div class="stars">${'⭐'.repeat(stars)}</div>
-                    <p style="color:#27ae60;font-weight:bold;">+${stars * 30} 🪙</p>
-                    <button onclick="this.closest('.modal-overlay').remove();returnToMenu();">
+                    <p style="color:#27ae60; font-weight:bold;">+${stars * 30} 🪙</p>
+                    <button onclick="this.closest('.modal-overlay').remove(); returnToMenu();">
                         Continuar
                     </button>
                 </div>
@@ -1090,7 +1053,6 @@
 
         function inputLetter(letter) {
             if (!gameState.selectedCell) {
-                // Auto-selecionar primeira célula vazia
                 const word = gameState.currentLevel.words[gameState.currentClueIndex];
                 for (let i = 0; i < word.answer.length; i++) {
                     const r = word.row + (word.dir === "V" ? i : 0);
@@ -1107,7 +1069,6 @@
             const key = `${gameState.selectedCell.row}-${gameState.selectedCell.col}`;
             gameState.userInput[key] = letter;
             
-            // Avançar para próxima célula
             const word = gameState.currentLevel.words[gameState.currentClueIndex];
             let currentIdx = -1;
             for (let i = 0; i < word.answer.length; i++) {
@@ -1165,7 +1126,7 @@
                     gameState.hints = 1;
                     localStorage.setItem('cw_coins', gameState.coins.toString());
                 } else {
-                    alert('🪙 Moedas insuficientes! Complete fases para ganhar mais.');
+                    alert('🪙 Moedas insuficientes!');
                     return;
                 }
             }
@@ -1177,14 +1138,14 @@
                 const r = word.row + (word.dir === "V" ? i : 0);
                 const c = word.col + (word.dir === "H" ? i : 0);
                 const key = `${r}-${c}`;
-                if (!gameState.userInput[key]) {
-                    emptyCells.push({ i, r, c, key });
+                if (!gameState.userInput[key] || gameState.userInput[key] !== word.answer[i]) {
+                    emptyCells.push({ key, letter: word.answer[i] });
                 }
             }
             
             if (emptyCells.length > 0) {
                 const cell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                gameState.userInput[cell.key] = word.answer[cell.i];
+                gameState.userInput[cell.key] = cell.letter;
                 gameState.hints--;
                 
                 document.getElementById('hints-left').textContent = gameState.hints;
